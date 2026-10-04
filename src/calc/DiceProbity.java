@@ -1,217 +1,119 @@
 package calc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-/**
- * ƒTƒCƒRƒƒQ[ƒ€B
- * 
- * @author yaoroz
- *
- */
+/** ã‚µã‚¤ã‚³ãƒ­ã‚²ãƒ¼ãƒ ã€‚ */
 public class DiceProbity {
-	/**
-	 * —”
-	 */
-	private Random r = new Random();
-	/**
-	 * À{ƒQ[ƒ€”
-	 */
+	private final Random r;
 	private int execGames = 10000;
-	/**
-	 * 1ƒQ[ƒ€‚ ‚½‚è‚ÌƒTƒCƒRƒŒÂ”
-	 */
 	private int diceTimes = 4;
-	/**
-	 * ƒTƒCƒRƒ‚Ì–Ê”
-	 */
 	private int sided = 6;
 
-	/**
-	 * ƒfƒtƒHƒ‹ƒg:1ƒQ[ƒ€4ŒÂ‚Ì6–ÊƒTƒCƒRƒ‚ğ10000‰ñÀ{‚·‚éB
-	 * 
-	 */
+	public DiceProbity() {
+		this(new Random());
+	}
+
+	DiceProbity(Random random) {
+		this.r = random;
+	}
+
 	void games() {
 		int quad = 0;
 		int triple = 0;
 		int doubles = 0;
 		int special = 0;
 		int none = 0;
-		int money = 0;
-		for (int games = 1; games <= execGames; games++) {
+		long money = 0;
+		for (int game = 0; game < execGames; game++) {
 			List<Integer> diceList = new ArrayList<>();
-			List<Integer> roleList = new ArrayList<>();
-			for (int times = 1; times <= diceTimes; times++) {
-				int dice = diceRole();
-//				System.out.println("ƒTƒCƒRƒ:" + dice);
-				diceList.add(dice);
+			for (int times = 0; times < diceTimes; times++) {
+				diceList.add(r.nextInt(sided) + 1);
 			}
-			roleList.add(strengeRole(diceList));
-			for (int role : roleList) {
-				// TODO:Enum‚É‚·‚é
-				if (role == 4) {
-//					System.out.println("–ğ:ƒNƒAƒbƒY");
-					quad++;
-					money += 5000;
-				} else if (role == 3) {
-//					System.out.println("–ğ:ƒgƒŠƒvƒ‹");
-					triple++;
-					money += 2000;
-				} else if (role == 2) {
-//					System.out.println("–ğ:ƒ_ƒuƒ‹");
-					doubles++;
-					money += 500;
-				} else if (role == 9) {
-//					System.out.println("–ğ:“Á•ÊÜ");
-					special++;
-					money += 3000;
-				} else {
-//					System.out.println("–ğ:‚È‚µ");
-					none++;
-					money += 0;
-				}
-			}
-			// ‘SƒQ[ƒ€Œ‹‰Ê
-			if (games == execGames) {
-				System.out.println("--------------------------------------");
-				System.out
-						.println("ƒNƒAƒbƒY:" + quad + "‰ñ(" + String.format("%.3f", (double) quad / execGames * 100) + "%)");
-				System.out.println(
-						"ƒgƒŠƒvƒ‹:" + triple + "‰ñ(" + String.format("%.3f", (double) triple / execGames * 100) + "%)");
-				System.out.println(
-						"ƒ_ƒuƒ‹:" + doubles + "‰ñ(" + String.format("%.3f", (double) doubles / execGames * 100) + "%)");
-				System.out.println(
-						"“Á•ÊÜ:" + special + "‰ñ(" + String.format("%.3f", (double) special / execGames * 100) + "%)");
-				System.out.println("‚È‚µ:" + none + "‰ñ(" + String.format("%.3f", (double) none / execGames * 100) + "%)");
-				System.out.println("ƒQ[ƒ€”:" + execGames + "‰ñ");
-				System.out.println("Šl“¾‹àŠz:" + money + "‰~");
-				// Šú‘Ò’l:690‰~‘OŒã‚É‚È‚é
-				System.out.println("Šú‘Ò’l:" + money / execGames + "‰~");
-				System.out.println("--------------------------------------");
+			switch (strongestRole(diceList)) {
+			case 4:
+				quad++;
+				money += 5000;
+				break;
+			case 3:
+				triple++;
+				money += 2000;
+				break;
+			case 9:
+				special++;
+				money += 3000;
+				break;
+			case 2:
+				doubles++;
+				money += 500;
+				break;
+			default:
+				none++;
 			}
 		}
+		System.out.println("--------------------------------------");
+		printRole("ã‚¯ã‚¢ãƒƒã‚º", quad);
+		printRole("ãƒˆãƒªãƒ—ãƒ«", triple);
+		printRole("ãƒ€ãƒ–ãƒ«", doubles);
+		printRole("ç‰¹åˆ¥è³", special);
+		printRole("ãªã—", none);
+		System.out.println("ã‚²ãƒ¼ãƒ æ•°:" + execGames + "å›");
+		System.out.println("ç²å¾—é‡‘é¡:" + money + "å††");
+		System.out.println("æœŸå¾…å€¤:" + String.format(java.util.Locale.ROOT, "%.3f", (double) money / execGames) + "å††");
+		System.out.println("--------------------------------------");
 	}
 
-	/**
-	 * –ğ‚Ì‹­‚³‚ğ”»’è‚·‚éB
-	 * <p>
-	 * 0:–ğ‚È‚µ 1:‚¼‚ë–Ú4‚Â 2:‚¼‚ë–Ú3‚Â 3:‚¼‚ë–Ú2‚Â 9:2‚Â‚Ì–Ú‚ª2ƒyƒA
-	 * </p>
-	 * 
-	 * @return –ğ
-	 */
-	private int strengeRole(List<Integer> diceList) {
-		boolean pairFlag = false;
-		boolean twoPairFlag = false;
-		boolean doubleFlag = false;
-		boolean tripleFlag = false;
-		boolean quadFlag = false;
-		List<Integer> noPairDiceList = new ArrayList<>();
-		int pairDice = 0;
+	private void printRole(String name, int count) {
+		System.out.println(name + ":" + count + "å›("
+				+ String.format(java.util.Locale.ROOT, "%.3f", (double) count / execGames * 100) + "%)");
+	}
+
+	/** 4:ã‚¯ã‚¢ãƒƒã‚ºã€3:ãƒˆãƒªãƒ—ãƒ«ã€9:ç‰¹åˆ¥è³ã€2:ãƒ€ãƒ–ãƒ«ã€0:å½¹ãªã—ã€‚ */
+	static int strongestRole(List<Integer> diceList) {
+		Map<Integer, Integer> counts = new HashMap<>();
 		for (int dice : diceList) {
-			if (noPairDiceList.size() == 0) {
-				noPairDiceList.add(dice);
-				continue;
-			}
-			if (tripleFlag) {
-				if (pairDice == dice) {
-					quadFlag = true;
-				}
-			}
-			if (doubleFlag) {
-				if (pairDice == dice) {
-					tripleFlag = true;
-				}
-			}
-			for (int i = 0; i < noPairDiceList.size(); i++) {
-//				System.out.println(noPairDiceList.stream().collect(Collectors.toList()));
-				int noPairDice = noPairDiceList.get(i);
-				if (noPairDice == dice) {
-					if (pairFlag && pairDice != dice) {
-						twoPairFlag = true;
-					}
-					if (pairDice == 0) {
-						doubleFlag = true;
-						pairFlag = true;
-						pairDice = dice;
-					}
-
-					noPairDiceList.remove(i);
-				}
-			}
-			noPairDiceList.add(dice);
+			counts.merge(dice, 1, Integer::sum);
 		}
-
-		// –ğ”»’è
-//		System.out.println(" twoPairFlag=" + twoPairFlag);
-//		System.out.println(" quadFlag=" + quadFlag);
-//		System.out.println(" tripleFlag=" + tripleFlag);
-//		System.out.println(" doubleFlag=" + doubleFlag);
-
-		if (quadFlag) {
-			return 4;
-		} else if (tripleFlag) {
-			return 3;
-		} else if (twoPairFlag) {
-			return 9;
-		} else if (doubleFlag) {
-			return 2;
+		int largest = 0;
+		int pairs = 0;
+		for (int count : counts.values()) {
+			largest = Math.max(largest, count);
+			if (count >= 2) pairs++;
 		}
+		if (largest >= 4) return 4;
+		if (largest >= 3) return 3;
+		if (pairs >= 2) return 9;
+		if (pairs == 1) return 2;
 		return 0;
 	}
 
-	/**
-	 * ƒTƒCƒRƒ‚ğU‚éB
-	 * <p>
-	 * 6–ÊƒTƒCƒRƒ
-	 * </p>
-	 * 
-	 * @return ƒTƒCƒRƒ‚ğU‚Á‚½Œ‹‰Ê
-	 */
-	private int diceRole() {
-		return r.nextInt(sided) + 1;
-	}
-
-	/**
-	 * @return execGames
-	 */
 	public int getExecGames() {
 		return execGames;
 	}
 
-	/**
-	 * @param execGames ƒZƒbƒg‚·‚é execGames
-	 */
 	public void setExecGames(int execGames) {
+		if (execGames <= 0) throw new IllegalArgumentException("å®Ÿæ–½ã‚²ãƒ¼ãƒ æ•°ã¯1ä»¥ä¸Šã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚");
 		this.execGames = execGames;
 	}
 
-	/**
-	 * @return diceTimes
-	 */
 	public int getDiceTimes() {
 		return diceTimes;
 	}
 
-	/**
-	 * @param diceTimes ƒZƒbƒg‚·‚é diceTimes
-	 */
 	public void setDiceTimes(int diceTimes) {
+		if (diceTimes <= 0) throw new IllegalArgumentException("ã‚µã‚¤ã‚³ãƒ­å€‹æ•°ã¯1ä»¥ä¸Šã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚");
 		this.diceTimes = diceTimes;
 	}
 
-	/**
-	 * @return sided
-	 */
 	public int getSided() {
 		return sided;
 	}
 
-	/**
-	 * @param sided ƒZƒbƒg‚·‚é sided
-	 */
 	public void setSided(int sided) {
+		if (sided <= 0) throw new IllegalArgumentException("ã‚µã‚¤ã‚³ãƒ­ã®é¢æ•°ã¯1ä»¥ä¸Šã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚");
 		this.sided = sided;
 	}
 }
