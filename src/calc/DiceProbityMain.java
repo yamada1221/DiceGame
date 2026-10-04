@@ -1,74 +1,72 @@
 package calc;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class DiceProbityMain {
 	public static void main(String[] args) throws Exception {
-		// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+		if (args.length > 3) {
+			throw new IllegalArgumentException("å¼•æ•°ã¯ã‚²ãƒ¼ãƒ æ•°ãƒ»ã‚µã‚¤ã‚³ãƒ­å€‹æ•°ãƒ»é¢æ•°ã®3ã¤ã¾ã§ã§ã™ã€‚");
+		}
+		// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 		DiceProbity dp = new DiceProbity();
-		// ƒfƒtƒHƒ‹ƒgƒ`ƒFƒbƒN
+		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒã‚§ãƒƒã‚¯
 		String execGamesStr = null;
 		String diceTimesStr = null;
 		String sidedStr = null;
-		System.out.println("İ’è");
+		System.out.println("è¨­å®š");
 		System.out.println("--------------------------------------");
-		System.out.println("À{ƒQ[ƒ€”:" + dp.getExecGames());
-		System.out.println("1ƒQ[ƒ€‚ ‚½‚è‚ÌƒTƒCƒRƒŒÂ”:" + dp.getDiceTimes());
-		System.out.println("ƒTƒCƒRƒ‚Ì–Ê”:" + dp.getSided());
+		System.out.println("å®Ÿæ–½ã‚²ãƒ¼ãƒ æ•°:" + dp.getExecGames());
+		System.out.println("1ã‚²ãƒ¼ãƒ ã‚ãŸã‚Šã®ã‚µã‚¤ã‚³ãƒ­å€‹æ•°:" + dp.getDiceTimes());
+		System.out.println("ã‚µã‚¤ã‚³ãƒ­ã®é¢æ•°:" + dp.getSided());
 		System.out.println("--------------------------------------");
 		if (args.length > 0) {
-			// ˆø”İ’è
-			System.out.println("ˆø”‚Ì“à—e‚ğİ’è‚µ‚Ü‚·B");
+			// å¼•æ•°è¨­å®š
+			System.out.println("å¼•æ•°ã®å†…å®¹ã‚’è¨­å®šã—ã¾ã™ã€‚");
 			execGamesStr = args[0];
 			if (args.length > 1) {
 				diceTimesStr = args[1];
 			} else {
-				System.out.println("1ƒQ[ƒ€‚ ‚½‚è‚ÌƒTƒCƒRƒŒÂ”‚Ìİ’è‚Íİ’è‚È‚µ‚Ì‚½‚ßƒXƒLƒbƒv‚µ‚Ü‚·B");
+				System.out.println("1ã‚²ãƒ¼ãƒ ã‚ãŸã‚Šã®ã‚µã‚¤ã‚³ãƒ­å€‹æ•°ã®è¨­å®šã¯è¨­å®šãªã—ã®ãŸã‚ã‚¹ã‚­ãƒƒãƒ—ã—ã¾ã™ã€‚");
 				diceTimesStr = String.valueOf(dp.getDiceTimes());
 			}
 			if (args.length > 2) {
 				sidedStr = args[2];
 			} else {
-				System.out.println("ƒTƒCƒRƒ‚Ì–Ê”‚Ìİ’è‚Íİ’è‚È‚µ‚Ì‚½‚ßƒXƒLƒbƒv‚µ‚Ü‚·B");
+				System.out.println("ã‚µã‚¤ã‚³ãƒ­ã®é¢æ•°ã®è¨­å®šã¯è¨­å®šãªã—ã®ãŸã‚ã‚¹ã‚­ãƒƒãƒ—ã—ã¾ã™ã€‚");
 				sidedStr = String.valueOf(dp.getSided());
 			}
 		} else {
-			// ‘Î˜bƒCƒ“ƒ^[ƒtƒFƒCƒX
-			System.out.println("İ’è•ÏX(•ÏX‚µ‚È‚¢ê‡ƒGƒ“ƒ^[)");
+			// å¯¾è©±ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
+			System.out.println("è¨­å®šå¤‰æ›´(å¤‰æ›´ã—ãªã„å ´åˆã‚¨ãƒ³ã‚¿ãƒ¼)");
 			System.out.println("--------------------------------------");
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			try {
-				System.out.println("À{ƒQ[ƒ€”(“ü—Í):");
-				execGamesStr = in.readLine();
-				System.out.println("1ƒQ[ƒ€‚ ‚½‚è‚ÌƒTƒCƒRƒŒÂ”(“ü—Í):");
-				diceTimesStr = in.readLine();
-				System.out.println("ƒTƒCƒRƒ‚Ì–Ê”(“ü—Í):");
-				sidedStr = in.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			System.out.println("å®Ÿæ–½ã‚²ãƒ¼ãƒ æ•°(å…¥åŠ›):");
+			execGamesStr = in.readLine();
+			System.out.println("1ã‚²ãƒ¼ãƒ ã‚ãŸã‚Šã®ã‚µã‚¤ã‚³ãƒ­å€‹æ•°(å…¥åŠ›):");
+			diceTimesStr = in.readLine();
+			System.out.println("ã‚µã‚¤ã‚³ãƒ­ã®é¢æ•°(å…¥åŠ›):");
+			sidedStr = in.readLine();
 		}
-		// ƒoƒŠƒf[ƒVƒ‡ƒ“
+		// ãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³
 		try {
-			if (!"".equals(execGamesStr)) {
-				int execGames = Integer.valueOf(execGamesStr);
+			if (execGamesStr != null && !execGamesStr.trim().isEmpty()) {
+				int execGames = Integer.parseInt(execGamesStr.trim());
 				dp.setExecGames(execGames);
 			}
-			if (!"".equals(diceTimesStr)) {
-				int diceTimes = Integer.valueOf(diceTimesStr);
+			if (diceTimesStr != null && !diceTimesStr.trim().isEmpty()) {
+				int diceTimes = Integer.parseInt(diceTimesStr.trim());
 				dp.setDiceTimes(diceTimes);
 			}
-			if (!"".equals(sidedStr)) {
-				int sided = Integer.valueOf(sidedStr);
+			if (sidedStr != null && !sidedStr.trim().isEmpty()) {
+				int sided = Integer.parseInt(sidedStr.trim());
 				dp.setSided(sided);
 			}
 		} catch (NumberFormatException e) {
-			throw new Exception("”’l‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B", e);
+			throw new Exception("æ•°å€¤ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚", e);
 		}
-		// ƒQ[ƒ€ŠJn
+		// ã‚²ãƒ¼ãƒ é–‹å§‹
 		dp.games();
 	}
 
